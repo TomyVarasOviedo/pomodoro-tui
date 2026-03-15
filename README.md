@@ -21,7 +21,7 @@ Aplicación de temporizador Pomodoro con interfaz de terminal (TUI) escrita en R
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/pomodoro-rust.git
+git clone https://github.com/TomyVarasOviedo/pomodoro-rust.git
 cd pomodoro-rust
 ```
 
