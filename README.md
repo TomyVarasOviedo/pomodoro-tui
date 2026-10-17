@@ -76,7 +76,7 @@ Puedes editar este archivo para personalizar:
 - `ntfy_topic`: Configuración de topic para ntfy.sh
 
 ### Configuración de ntfy
-Para obtener notificaciones por [ntfy.sh](ww.ntfy.sh) debe seguir las siguientes intrucciones:
+Para obtener notificaciones por [ntfy.sh](https://ntfy.sh/) debe seguir las siguientes intrucciones:
 1. Descargar la aplicación de ntfy.sh (Ya sea en Android o Apple)
 2. Crear un topic (Desde el boton "+" y colocar el nombre)
 3. En el archivo de configuración `config.toml` colocar el nombre del topic en el parametro `ntfy_topic`
