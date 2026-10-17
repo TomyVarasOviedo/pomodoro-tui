@@ -1,12 +1,13 @@
 
 use notify_rust::{Notification, Urgency};
-
+use ntfy::{Error, Payload};
+use ntfy::prelude::dispatcher;
 use crate::config::Config;
 use crate::timer::{Phase, Timer};
 
-pub fn send_notification(timer:&Timer, config:&Config) {
+pub async fn send_notification(timer:&Timer, config:&Config) -> Result<(),Error> {
     if !config.notifications.enabled {
-        return;
+        return Err(Error::EmptyResponse);
     }
 
     if config.notifications.bell {
@@ -15,6 +16,14 @@ pub fn send_notification(timer:&Timer, config:&Config) {
 
     let (title, body) = build_message(timer);
     let urgency = parse_urgency(&config.notifications.urgency);
+    let dispatcher = dispatcher::builder("https://ntfy.sh")
+        .build_async()?;
+    let payload = Payload::new(&config.ntfy_topic)
+        .title(&title)
+        .message(&body)
+        .priority(ntfy::Priority::High)
+        .markdown(true);
+
 
     let result = Notification::new()
         .summary(&title)
@@ -22,13 +31,16 @@ pub fn send_notification(timer:&Timer, config:&Config) {
         .icon(&config.notifications.icon)
         .urgency(urgency)
         .timeout(notify_rust::Timeout::Milliseconds(8000))
+        .sound_name("bell.oga")
         .show();
 
     if let Err(e) = result {
         eprintln!("⚠ Notification failed: {e}")
     }
 
+    dispatcher.send(&payload).await?;
 
+    Ok(())
 }
 fn build_message(timer: &Timer) -> (String, String) {
     match timer.phase {

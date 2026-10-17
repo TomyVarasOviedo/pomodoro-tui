@@ -1,24 +1,23 @@
 use ratatui::{Frame, layout::{Alignment, Constraint, Direction, Layout, Rect}, style::{Color, Modifier, Style}, text::{Line, Span}, widgets::{Block, Borders, Gauge, Padding, Paragraph}};
 
 use crate::timer::{Phase, Status, Timer};
-
-const COLOR_FOCUS:       Color = Color::Rgb(224,  95,  95);  // tomato-red
-const COLOR_SHORT:       Color = Color::Rgb( 95, 180, 130);  // mint
-const COLOR_LONG:        Color = Color::Rgb( 95, 145, 224);  // sky-blue
-const COLOR_PAUSED:      Color = Color::Rgb(160, 160, 160);  // grey
-const COLOR_BG:          Color = Color::Reset;
-const COLOR_LABEL:       Color = Color::DarkGray;
+const COLOR_BG:Color = Color::Reset;
+const COLOR_FOCUS:Color = Color::Rgb(  0, 188, 212);  // cyan
+const COLOR_SHORT:Color = Color::Rgb( 65, 105, 225);  // indigo
+const COLOR_LONG:Color = Color::Rgb(138,  43, 226);  // blueviolet
+const COLOR_PAUSED:Color = Color::Rgb(127, 140, 160);  // blue-grey
+const COLOR_LABEL:Color = Color::Rgb(152, 166, 179);  // light blue-grey
 
 const DIGITS: [&[&str]; 10] = [
     &["▛▀▜", "▌ ▐", "▌ ▐", "▌ ▐", "▙▄▟"],  // 0
     &["  ▐", "  ▐", "  ▐", "  ▐", "  ▐"],  // 1
-    &["▛▀▜", "  ▐", "▛▀▟", "▌  ", "▙▄▟"],  // 2
-    &["▛▀▜", "  ▐", " ▀▟", "  ▐", "▙▄▟"],  // 3
+    &["▛▀▜", "  ▐", "▛▀▜", "▌  ", "▙▄▟"],  // 2
+    &["▛▀▜", "  ▐", " ▀▜", "  ▐", "▙▄▟"],  // 3
     &["▌ ▐", "▌ ▐", "▙▄▟", "  ▐", "  ▐"],  // 4
-    &["▛▀▜", "▌  ", "▙▀▜", "  ▐", "▙▄▟"],  // 5
-    &["▛▀▜", "▌  ", "▙▀▜", "▌ ▐", "▙▄▟"],  // 6
+    &["▛▀▜", "▌  ", "▛▀▜", "  ▐", "▙▄▟"],  // 5
+    &["▛▀▜", "▌  ", "▛▀▜", "▌ ▐", "▙▄▟"],  // 6
     &["▛▀▜", "  ▐", "  ▐", "  ▐", "  ▐"],  // 7
-    &["▛▀▜", "▌ ▐", "▙▀▟", "▌ ▐", "▙▄▟"],  // 8
+    &["▛▀▜", "▌ ▐", "▙▄▟", "▌ ▐", "▙▄▟"],  // 8
     &["▛▀▜", "▌ ▐", "▙▄▟", "  ▐", "▙▄▟"],  // 9
 ];
 
@@ -53,7 +52,7 @@ fn phase_color(timer: &Timer) -> Color{
     }
 }
 fn pomodoro_dots(count:u32) -> String{
-    let filled = "|-".repeat(count as usize);
+    let filled:String = "󰣘 ".repeat(count as usize);
     filled
 }
 pub fn render(f: &mut Frame, timer:&Timer) {

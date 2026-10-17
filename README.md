@@ -65,7 +65,7 @@ O ejecutar el binario compilado directamente:
 
 ## Configuración
 
-La configuración se guarda en `~/.config/pomodoro-rust/config.toml`
+La configuración se guarda en `~/.config/pomors/config.toml`
 
 Puedes editar este archivo para personalizar:
 
@@ -73,6 +73,16 @@ Puedes editar este archivo para personalizar:
 - `short_break_duration`: Descanso corto (default: 5 minutos)
 - `long_break_duration`: Descanso largo (default: 15 minutos)
 - `sessions_before_long_break`: Sesiones antes del descanso largo (default: 4)
+- `ntfy_topic`: Configuración de topic para ntfy.sh
+
+### Configuración de ntfy
+Para obtener notificaciones por [ntfy.sh](ww.ntfy.sh) debe seguir las siguientes intrucciones:
+1. Descargar la aplicación de ntfy.sh (Ya sea en Android o Apple)
+2. Crear un topic (Desde el boton "+" y colocar el nombre)
+3. En el archivo de configuración `config.toml` colocar el nombre del topic en el parametro `ntfy_topic`
+
+> [!WARNING]
+> Los topics son completamente publicos en la capa gratuita, utilice nombre que parezcan más una contraseña si prepetende conservar su privacidad
 
 ## Controles
 

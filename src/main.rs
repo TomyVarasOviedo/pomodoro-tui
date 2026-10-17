@@ -6,16 +6,19 @@ mod notify;
 use std::{io, time::Duration};
 
 use config::Config;
-use crossterm::{event::{self, Event, KeyCode, KeyModifiers}, 
-                execute, terminal::{EnterAlternateScreen, 
-                LeaveAlternateScreen, disable_raw_mode, enable_raw_mode}};
+use crossterm::{
+    event::{self, Event, KeyCode, KeyModifiers},
+    execute,
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
+};
 use ratatui::{Terminal, backend::CrosstermBackend};
 use timer::Timer;
 
-fn main() -> io::Result<()>{
+#[tokio::main]
+async fn main() -> io::Result<()> {
     let config = Config::load();
     let mut timer = Timer::new(config.clone());
-    
+
     enable_raw_mode()?;
 
     let mut stdout = io::stdout();
@@ -32,10 +35,10 @@ fn main() -> io::Result<()>{
 
         if event::poll(tick)? {
             if let Event::Key(key) = event::read()? {
-                if key.modifiers.contains(KeyModifiers::CONTROL) 
-                && matches!(key.code, KeyCode::Char('c') | KeyCode::Char('d')) {
+                if key.modifiers.contains(KeyModifiers::CONTROL)
+                    && matches!(key.code, KeyCode::Char('c') | KeyCode::Char('d'))
+                {
                     break;
-                    
                 }
                 match key.code {
                     KeyCode::Char('q') | KeyCode::Char('Q') => break,
@@ -44,9 +47,11 @@ fn main() -> io::Result<()>{
                         timer.toggle();
                     }
 
-                    KeyCode::Char('s') | KeyCode::Char('S') =>{
+                    KeyCode::Char('s') | KeyCode::Char('S') => {
                         timer.skip();
-                        notify::send_notification(&timer, &config);
+                        if let Err(e) = notify::send_notification(&timer, &config).await {
+                            eprintln!("⚠ ntfy: {e}");
+                        }
                     }
 
                     KeyCode::Char('r') | KeyCode::Char('R') => {
@@ -54,12 +59,14 @@ fn main() -> io::Result<()>{
                     }
 
                     _ => {}
-                }                
+                }
             }
         }
 
         if timer.tick() {
-            notify::send_notification(&timer, &config);
+            if let Err(e) = notify::send_notification(&timer, &config).await {
+                eprintln!("⚠ ntfy: {e}");
+            }
         }
     }
 

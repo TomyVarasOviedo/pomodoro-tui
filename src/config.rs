@@ -15,6 +15,9 @@ pub struct Config {
     #[serde(default = "default_long_break_interval")]
     pub long_break_interval: u32,
 
+    #[serde(default="default_ntfy_topic")]
+    pub ntfy_topic: String,
+
     #[serde(default)]
     pub notifications:NotificationConfig,
     
@@ -26,6 +29,7 @@ impl Default for Config {
             short_break_minutes: default_short_break(), 
             long_break_minutes: default_long_break(),
             long_break_interval: default_long_break_interval(), 
+            ntfy_topic: default_ntfy_topic(),
             notifications: NotificationConfig::default(),
         }
     }
@@ -94,4 +98,5 @@ fn default_long_break() -> u64 { 15 }
 fn default_long_break_interval() -> u32 { 5 }
 fn bool_true() -> bool { true }
 fn default_urgency() -> String { "normal".into() }
+fn default_ntfy_topic() -> String { "pomors".into() }
 fn default_icon() -> String { "appointment-soon".into() }
